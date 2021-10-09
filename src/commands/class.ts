@@ -1,4 +1,6 @@
 import {Command, flags} from '@oclif/command'
+const open = require('open');
+const inquirer = require('inquirer');
 
 export default class Class extends Command {
   static description = 'describe the command here'
@@ -14,12 +16,30 @@ export default class Class extends Command {
   static args = [{name: 'file'}]
 
   async run() {
-    const {args, flags} = this.parse(Class)
+    const questions = [
+      {
+        type: 'list',
+        name: 'class',
+        message: 'Choose class',
+        choices: ['FlashDev beginner', 'FlashDev professional', 'FlashDev expert'],
+        // filter(val: string) {
+        //   return val.toLowerCase();
+        // },
+      },
+    ];
 
-    const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /Users/mordvash/Projects/nodejs/flashcli/src/commands/class.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
-    }
+    inquirer.prompt(questions).then(async (answers: any) => {
+      switch (answers.class) {
+        case 'FlashDev beginner':
+          await open('https://my.schooler.biz/s/26524/login');
+          break
+        case 'FlashDev professional':
+          await open('https://my.schooler.biz/s/27950/login');
+          break
+        case 'FlashDev expert':
+          await open('https://my.schooler.biz/s/29582/login');
+          break
+      }
+    });
   }
 }
